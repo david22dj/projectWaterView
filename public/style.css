@@ -1,0 +1,79 @@
+/* Pozadie */
+.login-body {
+    background: #dff0ff; /* jemne modré pozadie ako na obrázku */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+/* Karta */
+.login-card {
+    background: white;
+    width: 380px;
+    padding: 35px;
+    border-radius: 20px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
+/* Logo */
+.login-logo img {
+    width: 80px;
+    margin-bottom: 10px;
+}
+
+/* Nadpisy */
+.login-title {
+    font-size: 28px;
+    margin: 0;
+    color: #0077e4;
+}
+
+.login-subtitle {
+    margin-top: 4px;
+    margin-bottom: 25px;
+    color: #666;
+    font-size: 15px;
+}
+
+/* Form prvky */
+label {
+    text-align: left;
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 600;
+    color: #333;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 18px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 15px;
+}
+
+.btn-primary {
+    width: 100%;
+    padding: 12px;
+    background: #0077e4;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.btn-primary:hover {
+    background: #0064c3;
+}
+
+/* Error text */
+.error-message {
+    color: red;
+    margin-top: 8px;
+    font-size: 14px;
+}
