@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin panel – WaterView</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="layout-body">
+
+<!-- TOPBAR -->
+<header class="topbar">
+    <div class="logo-title">
+        <img src="png/logo.png" class="top-logo" alt="Logo">
+        <span class="waterview-title">WaterView</span>
+    </div>
+
+    <div class="hamburger" id="hamburgerBtn">☰</div>
+
+    <nav class="topnav" id="topnavMenu">
+        <a href="index.html">Domov</a>
+        <a href="rooms.html">Miestnosti</a>
+        <a href="history.html">Spotreba</a>
+        <a href="profile.html">Profil</a>
+        <a class="active" href="admin.html">Admin</a>
+    </nav>
+</header>
+
+<main class="content">
+
+    <h1 class="page-title">Admin panel</h1>
+
+    <!-- Tabs -->
+    <div class="admin-tabs">
+        <button class="admin-tab active" data-tab="users">👤 Používatelia</button>
+        <button class="admin-tab" data-tab="rooms">🏠 Miestnosti</button>
+        <button class="admin-tab" data-tab="measure">📍 Miesta merania</button>
+        <button class="admin-tab" data-tab="sensors">📡 Senzory</button>
+        <button class="admin-tab" data-tab="records">📊 Záznamy</button>
+    </div>
+
+    <!-- Obsah sekcie -->
+    <div id="adminContent"></div>
+
+</main>
+
+<script src="appPublic.js"></script>
+<script src="admin.js"></script>
+</body>
+</html>

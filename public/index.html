@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard – WaterView</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="layout-body">
+
+<!-- NAVBAR -->
+<!-- NAVBAR -->
+<header class="topbar">
+
+    <div class="logo-title">
+        <img src="png/logo.png" class="top-logo" alt="Logo">
+        <span class="waterview-title">WaterView</span>
+    </div>
+
+    <!-- hamburger button -->
+    <div class="hamburger" id="hamburgerBtn">☰</div>
+
+    <nav class="topnav" id="topnavMenu">
+        <a href="index.html" class="active">Domov</a>
+        <a href="rooms.html">Miestnosti</a>
+        <a href="history.html">Spotreba</a>
+        <a href="profile.html">Profil</a>
+
+        <!-- ADMIN link, ktorý budeme skrývať -->
+        <a href="admin.html" id="adminNav">Admin</a>
+    </nav>
+
+</header>
+
+
+<!-- HLAVNÝ OBSAH -->
+<main class="content">
+
+    <h1 class="page-title">Dashboard</h1>
+
+    <!-- 3 karty -->
+    <div class="stats-grid">
+
+        <div class="stat-card">
+            <p class="stat-label">Dnes</p>
+            <p class="stat-value">290 L</p>
+        </div>
+
+        <div class="stat-card">
+            <p class="stat-label">Tento týždeň</p>
+            <p class="stat-value">2,276 L</p>
+        </div>
+
+        <div class="stat-card">
+            <p class="stat-label">Tento mesiac</p>
+            <p class="stat-value">9,845 L</p>
+        </div>
+
+    </div>
+
+    <!-- Graf -->
+    <div class="chart-card">
+        <h2 class="chart-title">Týždenná spotreba</h2>
+        <div class="chart-placeholder">Graf bude tu</div>
+    </div>
+
+    <!-- Miestnosti -->
+    <h2 class="section-title">Miestnosti</h2>
+
+    <div class="rooms-grid">
+
+        <div class="room-card">
+            <h3>Kúpeľňa</h3>
+            <p class="room-value">145 L dnes</p>
+        </div>
+
+        <div class="room-card">
+            <h3>Kuchyňa</h3>
+            <p class="room-value">89 L dnes</p>
+        </div>
+
+        <div class="room-card">
+            <h3>WC</h3>
+            <p class="room-value">56 L dnes</p>
+        </div>
+
+    </div>
+
+</main>
+
+<script src="appPublic.js"></script>
+</body>
+</html>

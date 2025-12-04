@@ -40,5 +40,16 @@ export const PouzivatelModel = {
             callback(err, this?.changes);
             // changes = 1, ak bol zmazaný
         });
-    }
+    },
+
+    update(id, meno, email, rola, callback) {
+    db.run(
+        "UPDATE Pouzivatel SET meno = ?, email = ?, rola = ? WHERE id_pouzivatel = ?",
+        [meno, email, rola, id],
+        function (err) {
+            callback(err, this.changes);
+        }
+    );
+}
+
 };

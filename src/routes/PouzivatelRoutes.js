@@ -12,4 +12,9 @@ router.post("/users", PouzivatelController.create);
 // DELETE /api/users/:id
 router.delete("/users/:id", PouzivatelController.delete);
 
+router.post("/users/login", PouzivatelController.login);
+
+router.put("/users/:id", PouzivatelController.update);
+
+
 export default router;
