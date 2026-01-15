@@ -2,44 +2,93 @@ import db from "../db.js";
 
 export const SensorModel = {
 
-    // 1) GET ALL — všetky senzory + názvy miest a miestností
     getAll(callback) {
         const sql = `
             SELECT 
-                Sensor.*,
-                Miesto_merania.nazov AS nazov_merania,
-                Miestnost.nazov AS nazov_miestnosti
-            FROM Sensor
-            JOIN Miesto_merania 
-                ON Sensor.id_meranie = Miesto_merania.id_meranie
-            JOIN Miestnost
-                ON Miesto_merania.id_miestnost = Miestnost.id_miestnost
+                s.id_sensor,
+                s.id_meranie,
+                s.typ,
+                s.jednotka,
+                s.popis,
+                mm.nazov AS meranie_nazov,
+                m.nazov AS miestnost_nazov
+            FROM Sensor s
+            JOIN Miesto_merania mm ON s.id_meranie = mm.id_meranie
+            JOIN Miestnost m ON mm.id_miestnost = m.id_miestnost
+            ORDER BY s.id_sensor DESC
         `;
-
-        db.all(sql, [], (err, rows) => {
-            callback(err, rows);
-        });
+        db.all(sql, [], callback);
     },
 
-    // 2) CREATE — vytvorí senzor
     create(id_meranie, typ, jednotka, popis, callback) {
-        const sql = `
-            INSERT INTO Sensor (id_meranie, typ, jednotka, popis)
-            VALUES (?, ?, ?, ?)
-        `;
-        db.run(sql, [id_meranie, typ, jednotka, popis], function(err) {
-            callback(err, this?.lastID);
-        });
+        db.run(
+            `INSERT INTO Sensor (id_meranie, typ, jednotka, popis)
+             VALUES (?, ?, ?, ?)`,
+            [id_meranie, typ, jednotka, popis],
+            function (err) {
+                callback(err, this?.lastID);
+            }
+        );
     },
 
-    // 3) DELETE — zmaže senzor
+    update(id, id_meranie, typ, jednotka, popis, callback) {
+        db.run(
+            `UPDATE Sensor
+             SET id_meranie = ?, typ = ?, jednotka = ?, popis = ?
+             WHERE id_sensor = ?`,
+            [id_meranie, typ, jednotka, popis, id],
+            function (err) {
+                callback(err, this.changes);
+            }
+        );
+    },
+
     delete(id, callback) {
+        db.run(
+            "DELETE FROM Sensor WHERE id_sensor = ?",
+            [id],
+            function (err) {
+                callback(err, this.changes);
+            }
+        );
+    },
+    // senzory podľa miestnosti
+    getByRoom(id_miestnost, callback) {
         const sql = `
-            DELETE FROM Sensor
-            WHERE id_sensor = ?
-        `;
-        db.run(sql, [id], function(err) {
-            callback(err, this?.changes);
-        });
+        SELECT
+            s.id_sensor,
+            s.id_meranie,
+            s.typ,
+            s.jednotka,
+            s.popis,
+            mm.nazov AS meranie_nazov,
+            m.nazov AS miestnost_nazov
+        FROM Sensor s
+        JOIN Miesto_merania mm ON s.id_meranie = mm.id_meranie
+        JOIN Miestnost m ON mm.id_miestnost = m.id_miestnost
+        WHERE m.id_miestnost = ?
+        ORDER BY s.id_sensor DESC
+    `;
+        db.all(sql, [id_miestnost], callback);
+    },
+
+// senzory podľa miesta merania
+    getByMeasure(id_meranie, callback) {
+        const sql = `
+        SELECT
+            s.id_sensor,
+            s.id_meranie,
+            s.typ,
+            s.jednotka,
+            s.popis,
+            mm.nazov AS meranie_nazov,
+            m.nazov AS miestnost_nazov
+        FROM Sensor s
+        JOIN Miesto_merania mm ON s.id_meranie = mm.id_meranie
+        JOIN Miestnost m ON mm.id_miestnost = m.id_miestnost
+        WHERE mm.id_meranie = ?
+        ORDER BY s.id_sensor DESC
+    `;
+        db.all(sql, [id_meranie], callback);
     }
 };

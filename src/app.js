@@ -7,15 +7,26 @@ import MiestoMeraniaRoutes from "./routes/MiestoMeraniaRoutes.js";
 import SensorRoutes from "./routes/SensorRoutes.js";
 import ZaznamRoutes from "./routes/ZaznamRoutes.js";
 
+import testPicoWRoutes from "./routes/testPicoW.js";
 
 
 const app = express();
 
-app.use(express.json());
+app.use(express.json());//toto je pico w
+let lastMessage = null;
+
+app.set("setLastMessage", (msg) => {
+    lastMessage = msg;
+});
+
+app.set("getLastMessage", () => lastMessage);
+
 
 app.get("/", (req, res) => {
     res.send("Backend beží...");
 });
+
+app.use("/api", testPicoWRoutes);
 
 app.use("/api", testRoutes);
 app.use("/api", PouzivatelRoutes);
@@ -24,7 +35,6 @@ app.use("/api", MiestoMeraniaRoutes);
 app.use("/api", SensorRoutes);
 app.use("/api", ZaznamRoutes);
 app.use(express.static("public"));
-
 
 
 export default app;

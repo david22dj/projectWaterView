@@ -548,6 +548,36 @@ input {
     margin-bottom: 12px;
 }
 
+/* na admin filtre */
+.admin-filter {
+    padding: 10px 14px;
+    border-radius: 10px;
+    border: 1px solid #cfd8dc;
+    font-size: 14px;
+    background-color: #fff;
+    min-width: 220px;
+    cursor: pointer;
+}
+
+.admin-filters {
+    display: flex;
+    gap: 12px;
+    margin: 15px 0 20px 0;
+    flex-wrap: wrap;
+}
+
+.admin-filter:hover {
+    border-color: #2196f3;
+}
+
+.admin-filter:focus {
+    outline: none;
+    border-color: #2196f3;
+    box-shadow: 0 0 0 2px rgba(33, 150, 243, 0.15);
+}
+
+
+
 
 
 
