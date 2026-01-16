@@ -23,6 +23,27 @@ export const ZaznamModel = {
         db.all(sql, [], callback);
     },
 
+    getByDate(date, callback) {
+        const sql = `
+        SELECT
+            z.id_zaznam,
+            z.hodnota,
+            z.cas,
+            s.typ AS sensor_typ,
+            s.jednotka,
+            mm.nazov AS meranie_nazov,
+            m.nazov AS miestnost_nazov
+        FROM Zaznam z
+        JOIN Sensor s ON z.id_sensor = s.id_sensor
+        JOIN Miesto_merania mm ON s.id_meranie = mm.id_meranie
+        JOIN Miestnost m ON mm.id_miestnost = m.id_miestnost
+        WHERE DATE(z.cas) = ?
+        ORDER BY z.cas DESC
+    `;
+        db.all(sql, [date], callback);
+    },
+
+
     // CREATE
     create(hodnota, cas, id_sensor, callback) {
         const sql = `

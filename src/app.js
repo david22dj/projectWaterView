@@ -9,6 +9,8 @@ import ZaznamRoutes from "./routes/ZaznamRoutes.js";
 
 import testPicoWRoutes from "./routes/testPicoW.js";
 
+import ProfileRoutes from "./routes/ProfileRoutes.js";
+
 
 const app = express();
 
@@ -34,6 +36,8 @@ app.use("/api", MiestnostRoutes);
 app.use("/api", MiestoMeraniaRoutes);
 app.use("/api", SensorRoutes);
 app.use("/api", ZaznamRoutes);
+
+app.use("/api", ProfileRoutes);
 app.use(express.static("public"));
 
 

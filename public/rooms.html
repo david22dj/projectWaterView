@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+    <meta charset="UTF-8">
+    <title>Miestnosti – WaterView</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="layout-body">
+
+<header class="topbar">
+    <div class="logo-title">
+        <img src="png/logo.png" class="top-logo" alt="Logo">
+        <span class="waterview-title">WaterView</span>
+    </div>
+
+    <div class="hamburger" id="hamburgerBtn">☰</div>
+
+    <nav class="topnav" id="topnavMenu">
+        <a href="index.html" data-page="index">Domov</a>
+        <a href="rooms.html" data-page="rooms" class="active">Miestnosti</a>
+        <a href="history.html" data-page="history">Spotreba</a>
+        <a href="profile.html" data-page="profile">Profil</a>
+        <a href="admin.html" id="adminNav" data-page="admin">Admin</a>
+    </nav>
+</header>
+
+<main class="content">
+    <h1 class="page-title">Miestnosti</h1>
+
+    <div class="rooms-grid" id="roomsContainer">
+        <!-- generované JS -->
+    </div>
+</main>
+
+<script src="appPublic.js"></script>
+<script src="rooms.js"></script>
+</body>
+</html>

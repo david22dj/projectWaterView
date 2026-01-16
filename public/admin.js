@@ -194,11 +194,20 @@ async function loadAdminSection(type) {
 
 
     if (type === "records") {
+        const today = new Date().toISOString().slice(0, 10);
+
         content.innerHTML = `
         <div class="admin-box">
             <button class="btn-add" id="addRecordBtn">+ Pridať záznam</button>
 
             <h2>Správa záznamov</h2>
+
+            <div class="admin-filter-row">
+                <label>
+                    📅 Dátum:
+                    <input type="date" id="recordDate" value="${today}">
+                </label>
+            </div>
 
             <table class="admin-table">
                 <thead>
@@ -207,7 +216,7 @@ async function loadAdminSection(type) {
                         <th>Miestnosť</th>
                         <th>Miesto merania</th>
                         <th>Senzor</th>
-                        <th>Hodnota</th>
+                        <th>Hodnota (L)</th>
                         <th>Akcie</th>
                     </tr>
                 </thead>
@@ -216,9 +225,16 @@ async function loadAdminSection(type) {
         </div>
     `;
 
-        loadRecords();
-        document.getElementById("addRecordBtn").addEventListener("click", showAddRecordModal);
+        loadRecords(today);
+
+        document.getElementById("recordDate").addEventListener("change", e => {
+            loadRecords(e.target.value);
+        });
+
+        document.getElementById("addRecordBtn")
+            .addEventListener("click", showAddRecordModal);
     }
+
 
 }
 
@@ -381,25 +397,32 @@ function getSelectedSensorMeasure() {
 /****************************************
  *  READ – Načíta záznamy
  ****************************************/
-async function loadRecords() {
+async function loadRecords(date) {
     const tbody = document.getElementById("recordTableBody");
-    const data = await fetch("/api/records").then(r => r.json());
+
+    const url = date
+        ? `/api/records?date=${date}`
+        : `/api/records`;
+
+    const data = await fetch(url).then(r => r.json());
 
     tbody.innerHTML = data.map(z => `
         <tr>
-            <td>${z.cas}</td>
+            <td>${z.cas.slice(11, 16)}</td>
             <td>${z.miestnost_nazov}</td>
             <td>${z.meranie_nazov}</td>
             <td>${z.sensor_typ} (${z.jednotka})</td>
             <td>${z.hodnota}</td>
             <td>
-                <span class="table-action delete" onclick="deleteRecord(${z.id_zaznam})">
+                <span class="table-action delete"
+                      onclick="deleteRecord(${z.id_zaznam})">
                     Zmazať
                 </span>
             </td>
         </tr>
     `).join("");
 }
+
 
 
 

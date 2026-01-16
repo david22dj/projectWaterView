@@ -22,13 +22,11 @@
     <div class="hamburger" id="hamburgerBtn">☰</div>
 
     <nav class="topnav" id="topnavMenu">
-        <a href="index.html" class="active">Domov</a>
-        <a href="rooms.html">Miestnosti</a>
-        <a href="history.html">Spotreba</a>
-        <a href="profile.html">Profil</a>
-
-        <!-- ADMIN link, ktorý budeme skrývať -->
-        <a href="admin.html" id="adminNav">Admin</a>
+        <a href="index.html" data-page="index" class="active">Domov</a>
+        <a href="rooms.html" data-page="rooms">Miestnosti</a>
+        <a href="history.html" data-page="history">Spotreba</a>
+        <a href="profile.html" data-page="profile">Profil</a>
+        <a href="admin.html" id="adminNav" data-page="admin">Admin</a>
     </nav>
 
 </header>
@@ -39,22 +37,22 @@
 
     <h1 class="page-title">Dashboard</h1>
 
-    <!-- 3 karty -->
+    <!-- ŠTATISTIKY -->
     <div class="stats-grid">
 
         <div class="stat-card">
             <p class="stat-label">Dnes</p>
-            <p class="stat-value">290 L</p>
+            <p class="stat-value" id="todayValue">0 L</p>
         </div>
 
         <div class="stat-card">
             <p class="stat-label">Tento týždeň</p>
-            <p class="stat-value">2,276 L</p>
+            <p class="stat-value" id="weekValue">0 L</p>
         </div>
 
         <div class="stat-card">
             <p class="stat-label">Tento mesiac</p>
-            <p class="stat-value">9,845 L</p>
+            <p class="stat-value" id="monthValue">0 L</p>
         </div>
 
     </div>
@@ -62,34 +60,24 @@
     <!-- Graf -->
     <div class="chart-card">
         <h2 class="chart-title">Týždenná spotreba</h2>
-        <div class="chart-placeholder">Graf bude tu</div>
+        <canvas id="weeklyChart" height="120"></canvas>
     </div>
+
 
     <!-- Miestnosti -->
     <h2 class="section-title">Miestnosti</h2>
 
-    <div class="rooms-grid">
-
-        <div class="room-card">
-            <h3>Kúpeľňa</h3>
-            <p class="room-value">145 L dnes</p>
-        </div>
-
-        <div class="room-card">
-            <h3>Kuchyňa</h3>
-            <p class="room-value">89 L dnes</p>
-        </div>
-
-        <div class="room-card">
-            <h3>WC</h3>
-            <p class="room-value">56 L dnes</p>
-        </div>
-
+    <div class="rooms-grid" id="roomsGrid">
+        <!-- dynamicky generované -->
     </div>
 
 </main>
 
+<!-- SHARED LOGIKA -->
 <script src="appPublic.js"></script>
+<!-- KNIŽNICA CHART.JS -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<!-- DASHBOARD LOGIKA -->
 <script src="dashboard.js"></script>
 
 </body>

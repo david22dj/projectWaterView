@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+    <meta charset="UTF-8">
+    <title>Profil – WaterView</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="layout-body">
+
+<header class="topbar">
+    <div class="logo-title">
+        <img src="png/logo.png" class="top-logo">
+        <span class="waterview-title">WaterView</span>
+    </div>
+
+    <nav class="topnav">
+        <a href="index.html">Domov</a>
+        <a href="rooms.html">Miestnosti</a>
+        <a href="history.html">Spotreba</a>
+        <a href="profile.html" class="active">Profil</a>
+        <a href="admin.html" id="adminNav">Admin</a>
+    </nav>
+</header>
+
+<main class="content">
+    <h1 class="page-title">Profil používateľa</h1>
+
+    <div class="admin-box">
+        <h2>Email</h2>
+        <input id="emailInput">
+        <button class="btn-add" id="saveEmailBtn">Uložiť email</button>
+        <div class="error-box" id="emailError"></div>
+    </div>
+
+    <div class="admin-box">
+        <h2>Zmena hesla</h2>
+
+        <input type="password" id="oldPassword" placeholder="Aktuálne heslo">
+        <input type="password" id="newPassword" placeholder="Nové heslo">
+        <input type="password" id="confirmPassword" placeholder="Potvrdenie hesla">
+
+        <button class="btn-add" id="savePasswordBtn">Zmeniť heslo</button>
+        <div class="error-box" id="passwordError"></div>
+    </div>
+</main>
+
+<script src="appPublic.js"></script>
+<script src="profile.js"></script>
+</body>
+</html>

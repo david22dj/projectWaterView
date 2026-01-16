@@ -41,6 +41,24 @@ export const PouzivatelModel = {
             // changes = 1, ak bol zmazaný
         });
     },
+    getById(id, callback) {
+        db.get(
+            "SELECT * FROM Pouzivatel WHERE id_pouzivatel = ?",
+            [id],
+            callback
+        );
+    },
+
+    updatePassword(id, heslo, callback) {
+        db.run(
+            "UPDATE Pouzivatel SET heslo = ? WHERE id_pouzivatel = ?",
+            [heslo, id],
+            function (err) {
+                callback(err, this.changes);
+            }
+        );
+    },
+
 
     update(id, meno, email, rola, callback) {
     db.run(
@@ -50,6 +68,7 @@ export const PouzivatelModel = {
             callback(err, this.changes);
         }
     );
+
 }
 
 };

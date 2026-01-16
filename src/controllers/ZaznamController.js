@@ -5,13 +5,21 @@ export const ZaznamController = {
 
     // GET /api/records
     getAll(req, res) {
+        const { date } = req.query;
+
+        if (date) {
+            return ZaznamModel.getByDate(date, (err, rows) => {
+                if (err) return res.status(500).json({ error: "Chyba pri filtrovaní." });
+                res.json(rows);
+            });
+        }
+
         ZaznamModel.getAll((err, rows) => {
-            if (err) {
-                return res.status(500).json({ error: "Chyba pri načítaní záznamov." });
-            }
+            if (err) return res.status(500).json({ error: "Chyba pri načítaní záznamov." });
             res.json(rows);
         });
     },
+
 
     // POST /api/records
     create(req, res) {
