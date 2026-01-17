@@ -1,73 +1,60 @@
 /*********************************
- *  DASHBOARD – ZÁKLADNÉ ŠTATISTIKY
+ *  DASHBOARD – INIT
  *********************************/
-
-// po načítaní stránky
 document.addEventListener("DOMContentLoaded", () => {
     loadDashboardStats();
+    loadWeeklyChart();
+    loadRoomsToday();
 });
 
+/*********************************
+ *  DASHBOARD – ŠTATISTIKY
+ *********************************/
 async function loadDashboardStats() {
     try {
         const res = await fetch("/api/records");
-        if (!res.ok) {
-            console.error("Chyba pri načítaní záznamov");
-            return;
-        }
+        if (!res.ok) throw new Error();
 
         const records = await res.json();
 
-        const todayTotal = sumToday(records);
-        const weekTotal = sumThisWeek(records);
-        const monthTotal = sumThisMonth(records);
+        setValue("todayValue", sumToday(records));
+        setValue("weekValue", sumThisWeek(records));
+        setValue("monthValue", sumThisMonth(records));
 
-        // zapísanie do DOM
-        setValue("todayValue", todayTotal);
-        setValue("weekValue", weekTotal);
-        setValue("monthValue", monthTotal);
-
-    } catch (err) {
-        console.error("Chyba dashboardu:", err);
+    } catch {
+        setValue("todayValue", 0);
+        setValue("weekValue", 0);
+        setValue("monthValue", 0);
     }
 }
 
-/*********************************
- *  POMOCNÉ FUNKCIE
- *********************************/
-
-function setValue(elementId, value) {
-    const el = document.getElementById(elementId);
-    if (el) {
-        el.textContent = `${value.toFixed(1)} L`;
-    }
+function setValue(id, value) {
+    const el = document.getElementById(id);
+    if (el) el.textContent = `${value.toFixed(1)} L`;
 }
 
 /*********************************
  *  VÝPOČTY
  *********************************/
-
-// DNES
 function sumToday(records) {
     const now = new Date();
     return records
         .filter(r => isSameDay(new Date(r.cas), now))
-        .reduce((sum, r) => sum + Number(r.hodnota), 0);
+        .reduce((s, r) => s + Number(r.hodnota), 0);
 }
 
-// TENTO TÝŽDEŇ
 function sumThisWeek(records) {
     const now = new Date();
-    const startOfWeek = getStartOfWeek(now);
+    const start = getStartOfWeek(now);
 
     return records
         .filter(r => {
             const d = new Date(r.cas);
-            return d >= startOfWeek && d <= now;
+            return d >= start && d <= now;
         })
-        .reduce((sum, r) => sum + Number(r.hodnota), 0);
+        .reduce((s, r) => s + Number(r.hodnota), 0);
 }
 
-// TENTO MESIAC
 function sumThisMonth(records) {
     const now = new Date();
 
@@ -77,23 +64,21 @@ function sumThisMonth(records) {
             return d.getMonth() === now.getMonth() &&
                 d.getFullYear() === now.getFullYear();
         })
-        .reduce((sum, r) => sum + Number(r.hodnota), 0);
+        .reduce((s, r) => s + Number(r.hodnota), 0);
 }
 
 /*********************************
- *  DATUMOVÉ POMOCNÉ FUNKCIE
+ *  DATUMY
  *********************************/
-
 function isSameDay(d1, d2) {
     return d1.getDate() === d2.getDate() &&
         d1.getMonth() === d2.getMonth() &&
         d1.getFullYear() === d2.getFullYear();
 }
 
-// začiatok týždňa (pondelok)
 function getStartOfWeek(date) {
     const d = new Date(date);
-    const day = d.getDay(); // 0 = nedeľa
+    const day = d.getDay();
     const diff = d.getDate() - day + (day === 0 ? -6 : 1);
     d.setDate(diff);
     d.setHours(0, 0, 0, 0);
@@ -101,33 +86,21 @@ function getStartOfWeek(date) {
 }
 
 /*********************************
- *  GRAF – TÝŽDENNÁ SPOTREBA
+ *  GRAF – TÝŽDEŇ
  *********************************/
-
 async function loadWeeklyChart() {
     try {
         const res = await fetch("/api/records");
-        if (!res.ok) return;
+        if (!res.ok) throw new Error();
 
         const records = await res.json();
+        const data = getLast7DaysTotals(records);
+        renderWeeklyChart(data);
 
-        const dailyTotals = getLast7DaysTotals(records);
-
-        renderWeeklyChart(dailyTotals);
-
-    } catch (err) {
-        console.error("Chyba grafu:", err);
+    } catch {
+        renderWeeklyChart(getEmptyWeek());
     }
 }
-
-// zavoláme po načítaní stránky
-document.addEventListener("DOMContentLoaded", () => {
-    loadWeeklyChart();
-});
-
-/*********************************
- *  AGREGÁCIA DÁT
- *********************************/
 
 function getLast7DaysTotals(records) {
     const days = [];
@@ -145,11 +118,11 @@ function getLast7DaysTotals(records) {
     }
 
     records.forEach(r => {
-        const recordDate = new Date(r.cas);
-        recordDate.setHours(0, 0, 0, 0);
+        const rd = new Date(r.cas);
+        rd.setHours(0, 0, 0, 0);
 
         days.forEach(day => {
-            if (recordDate.getTime() === day.date.getTime()) {
+            if (day.date.getTime() === rd.getTime()) {
                 day.total += Number(r.hodnota);
             }
         });
@@ -158,9 +131,13 @@ function getLast7DaysTotals(records) {
     return days;
 }
 
-/*********************************
- *  RENDER GRAFU
- *********************************/
+function getEmptyWeek() {
+    return Array.from({ length: 7 }, (_, i) => ({
+        label: new Date(Date.now() - (6 - i) * 86400000)
+            .toLocaleDateString("sk-SK", { weekday: "short" }),
+        total: 0
+    }));
+}
 
 function renderWeeklyChart(data) {
     const ctx = document.getElementById("weeklyChart");
@@ -171,24 +148,17 @@ function renderWeeklyChart(data) {
         data: {
             labels: data.map(d => d.label),
             datasets: [{
-                label: "Spotreba (L)",
                 data: data.map(d => d.total.toFixed(1)),
                 backgroundColor: "#0077e4"
             }]
         },
         options: {
             responsive: true,
-            plugins: {
-                legend: {
-                    display: false
-                }
-            },
+            plugins: { legend: { display: false } },
             scales: {
                 y: {
                     beginAtZero: true,
-                    ticks: {
-                        callback: value => value + " L"
-                    }
+                    ticks: { callback: v => v + " L" }
                 }
             }
         }
@@ -196,51 +166,38 @@ function renderWeeklyChart(data) {
 }
 
 /*********************************
- *  MIESTNOSTI – SPOTREBA DNES
+ *  MIESTNOSTI – DNES
  *********************************/
-
 async function loadRoomsToday() {
     try {
-        const res = await fetch("/api/records");
-        if (!res.ok) return;
+        const [rooms, measurements, records] = await Promise.all([
+            fetch("/api/rooms").then(r => r.json()),
+            fetch("/api/measurements").then(r => r.json()),
+            fetch("/api/records").then(r => r.json())
+        ]);
 
-        const records = await res.json();
+        const todayRecords = records.filter(r =>
+            isSameDay(new Date(r.cas), new Date())
+        );
 
-        const todayRooms = getTodayByRoom(records);
-        renderRooms(todayRooms);
+        const structure = {};
+
+        rooms.forEach(room => {
+            structure[room.nazov] = 0;
+        });
+
+        todayRecords.forEach(r => {
+            if (structure[r.miestnost_nazov] !== undefined) {
+                structure[r.miestnost_nazov] += Number(r.hodnota);
+            }
+        });
+
+        renderRooms(structure);
 
     } catch (err) {
         console.error("Chyba miestností:", err);
     }
 }
-
-// zavoláme po načítaní stránky
-document.addEventListener("DOMContentLoaded", () => {
-    loadRoomsToday();
-});
-
-/*********************************
- *  AGREGÁCIA PODĽA MIESTNOSTI
- *********************************/
-
-function getTodayByRoom(records) {
-    const today = new Date();
-    const result = {};
-
-    records.forEach(r => {
-        const d = new Date(r.cas);
-        if (isSameDay(d, today)) {
-            const room = r.miestnost_nazov || "Neznáma miestnosť";
-            result[room] = (result[room] || 0) + Number(r.hodnota);
-        }
-    });
-
-    return result;
-}
-
-/*********************************
- *  RENDER MIESTNOSTÍ
- *********************************/
 
 function renderRooms(data) {
     const container = document.getElementById("roomsGrid");
@@ -260,5 +217,4 @@ function renderRooms(data) {
         container.appendChild(card);
     });
 }
-
 

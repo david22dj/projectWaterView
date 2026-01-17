@@ -6,19 +6,19 @@ CREATE TABLE IF NOT EXISTS Pouzivatel (
     email VARCHAR(100) UNIQUE NOT NULL,
     heslo VARCHAR(255) NOT NULL,
     rola VARCHAR(20) NOT NULL
-    );
+);
 
 CREATE TABLE IF NOT EXISTS Miestnost (
     id_miestnost INTEGER PRIMARY KEY AUTOINCREMENT,
     nazov VARCHAR(50) NOT NULL
-    );
+);
 
 CREATE TABLE IF NOT EXISTS Miesto_merania (
     id_meranie INTEGER PRIMARY KEY AUTOINCREMENT,
     nazov VARCHAR(50) NOT NULL,
     id_miestnost INTEGER NOT NULL,
     FOREIGN KEY (id_miestnost) REFERENCES Miestnost(id_miestnost)
-    );
+);
 
 CREATE TABLE IF NOT EXISTS Sensor (
     id_sensor INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -27,7 +27,7 @@ CREATE TABLE IF NOT EXISTS Sensor (
     jednotka VARCHAR(10) NOT NULL,
     popis VARCHAR(100),
     FOREIGN KEY (id_meranie) REFERENCES Miesto_merania(id_meranie)
-    );
+);
 
 CREATE TABLE IF NOT EXISTS Zaznam (
     id_zaznam INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -35,4 +35,14 @@ CREATE TABLE IF NOT EXISTS Zaznam (
     cas DATETIME NOT NULL,
     id_sensor INTEGER NOT NULL,
     FOREIGN KEY (id_sensor) REFERENCES Sensor(id_sensor)
-    );
+);
+
+CREATE TABLE IF NOT EXISTS Faktura (
+    id_faktura INTEGER PRIMARY KEY AUTOINCREMENT,
+    nazov_suboru VARCHAR(255) NOT NULL,
+    povodny_nazov VARCHAR(255) NOT NULL,
+    typ_suboru VARCHAR(50) NOT NULL,
+    velkost INTEGER NOT NULL,
+    datum_uploadu DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+

@@ -1,22 +1,48 @@
 (() => {
+    let chart = null;
+
     document.addEventListener("DOMContentLoaded", init);
 
     async function init() {
         const roomName = getRoomFromUrl();
         if (!roomName) return;
 
+        const dateInput = document.getElementById("roomDate");
+        const backLink = document.getElementById("backLink");
+
+        const selectedDate = getDateFromUrl() || getToday();
+
         document.getElementById("roomTitle").textContent = roomName;
+        dateInput.value = selectedDate;
 
+        backLink.href = `rooms.html?date=${selectedDate}`;
+
+        await loadAndRender(roomName, selectedDate);
+
+        dateInput.addEventListener("change", async () => {
+            const newDate = dateInput.value;
+            backLink.href = `rooms.html?date=${newDate}`;
+            await loadAndRender(roomName, newDate);
+        });
+    }
+
+    async function loadAndRender(roomName, date) {
         const records = await loadRecords();
-        const todayRoomRecords = filterTodayByRoom(records, roomName);
-        const hourlyData = aggregateByHour(todayRoomRecords);
-
-        renderChart(hourlyData);
+        const filtered = filterByRoomAndDate(records, roomName, date);
+        const hourlyData = aggregateByHour(filtered);
+        renderChart(hourlyData, date);
     }
 
     function getRoomFromUrl() {
-        const params = new URLSearchParams(window.location.search);
-        return params.get("room");
+        return new URLSearchParams(window.location.search).get("room");
+    }
+
+    function getDateFromUrl() {
+        return new URLSearchParams(window.location.search).get("date");
+    }
+
+    function getToday() {
+        return new Date().toISOString().slice(0, 10);
     }
 
     async function loadRecords() {
@@ -25,11 +51,9 @@
         return res.json();
     }
 
-    function filterTodayByRoom(records, roomName) {
-        const today = new Date().toISOString().slice(0, 10);
-
+    function filterByRoomAndDate(records, roomName, date) {
         return records.filter(r =>
-            r.cas.startsWith(today) &&
+            r.cas.startsWith(date) &&
             r.miestnost_nazov === roomName
         );
     }
@@ -45,10 +69,14 @@
         return hours;
     }
 
-    function renderChart(data) {
+    function renderChart(data, date) {
         const ctx = document.getElementById("hourChart");
 
-        new Chart(ctx, {
+        if (chart) {
+            chart.destroy();
+        }
+
+        chart = new Chart(ctx, {
             type: "bar",
             data: {
                 labels: Array.from({ length: 24 }, (_, i) => `${i}:00`),
@@ -61,6 +89,10 @@
             options: {
                 responsive: true,
                 plugins: {
+                    title: {
+                        display: true,
+                        text: `Spotreba – ${date}`
+                    },
                     tooltip: {
                         callbacks: {
                             label: ctx => `${ctx.raw.toFixed(1)} L`

@@ -69,3 +69,35 @@ if (hamburgerBtn && topnavMenu) {
         topnavMenu.classList.toggle("open");
     });
 }
+
+async function requireLogin() {
+    const isLoginPage = window.location.pathname.endsWith("login.html") || document.getElementById("loginForm");
+    if (isLoginPage) return;
+
+    try {
+        const res = await fetch("/api/auth/me", { credentials: "include" });
+
+        if (!res.ok) {
+            localStorage.removeItem("user");
+            window.location.href = "login.html";
+            return;
+        }
+
+        const user = await res.json();
+        localStorage.setItem("user", JSON.stringify(user));
+
+        const adminNavItem = document.getElementById("adminNav");
+        if (adminNavItem && user.rola !== "admin") adminNavItem.style.display = "none";
+
+        const isAdminPage = window.location.pathname.endsWith("admin.html");
+        if (isAdminPage && user.rola !== "admin") {
+            window.location.href = "index.html";
+        }
+
+    } catch (e) {
+        localStorage.removeItem("user");
+        window.location.href = "login.html";
+    }
+}
+
+requireLogin();

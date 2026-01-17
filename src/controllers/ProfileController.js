@@ -3,36 +3,48 @@ import { PouzivatelModel } from "../models/PouzivatelModel.js";
 
 export const ProfileController = {
 
-    async updateEmail(req, res) {
-        const { id, email } = req.body;
+    updateEmail(req, res) {
+        const id = req.session.user.id;
+        const { email } = req.body;
 
-        if (!id || !email) {
-            return res.status(400).json({ error: "Chýbajú údaje." });
-        }
-
-        if (!email.includes("@") || !email.includes(".")) {
+        if (!email || !email.includes("@") || !email.includes(".")) {
             return res.status(400).json({ error: "Neplatný email." });
         }
 
         PouzivatelModel.getByEmail(email, (err, existing) => {
-            if (existing) {
+            if (existing && existing.id_pouzivatel !== id) {
                 return res.status(400).json({ error: "Email už existuje." });
             }
 
-            PouzivatelModel.update(id, null, email, null, (err2) => {
-                if (err2) {
-                    return res.status(500).json({ error: "Chyba servera." });
+            PouzivatelModel.getById(id, (err2, user) => {
+                if (!user) {
+                    return res.status(404).json({ error: "Používateľ nenájdený." });
                 }
 
-                res.json({ message: "Email zmenený." });
+                PouzivatelModel.update(
+                    id,
+                    user.meno,
+                    email,
+                    user.rola,
+                    err3 => {
+                        if (err3) {
+                            return res.status(500).json({ error: "Chyba servera." });
+                        }
+
+                        req.session.user.email = email;
+                        res.json({ message: "Email zmenený." });
+                    }
+                );
             });
         });
     },
 
-    async updatePassword(req, res) {
-        const { id, oldPassword, newPassword } = req.body;
 
-        if (!id || !oldPassword || !newPassword) {
+    async updatePassword(req, res) {
+        const id = req.session.user.id;
+        const { oldPassword, newPassword } = req.body;
+
+        if (!oldPassword || !newPassword) {
             return res.status(400).json({ error: "Vyplňte všetky polia." });
         }
 
@@ -52,10 +64,8 @@ export const ProfileController = {
 
             const hashedPassword = await bcrypt.hash(newPassword, 10);
 
-            PouzivatelModel.updatePassword(id, hashedPassword, (err2) => {
-                if (err2) {
-                    return res.status(500).json({ error: "Chyba pri ukladaní hesla." });
-                }
+            PouzivatelModel.updatePassword(id, hashedPassword, err2 => {
+                if (err2) return res.status(500).json({ error: "Chyba servera." });
 
                 res.json({ message: "Heslo zmenené." });
             });

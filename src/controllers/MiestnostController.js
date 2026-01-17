@@ -43,6 +43,11 @@ export const MiestnostController = {
             return res.status(400).json({ error: "Názov miestnosti je povinný." });
         }
 
+        if (isNaN(id)) {
+            return res.status(400).json({ error: "Neplatné ID miestnosti." });
+        }
+
+
         MiestnostModel.update(id, nazov.trim(), (err, changes) => {
             if (err) {
                 return res.status(500).json({ error: "Chyba pri úprave miestnosti." });
@@ -64,6 +69,11 @@ export const MiestnostController = {
             if (err) {
                 return res.status(500).json({ error: "Chyba pri mazaní miestnosti." });
             }
+
+            if (isNaN(id)) {
+                return res.status(400).json({ error: "Neplatné ID miestnosti." });
+            }
+
 
             if (changes === 0) {
                 return res.status(404).json({ error: "Miestnosť neexistuje." });

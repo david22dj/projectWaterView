@@ -1,3 +1,7 @@
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
 /* Pozadie */
 .login-body {
     background: #dff0ff; /* jemne modré pozadie ako na obrázku */
@@ -378,6 +382,51 @@ input {
     float: right;
     margin-bottom: 15px;
 }
+/* ===== PROFILE PAGE ===== */
+
+.profile-box {
+    background: white;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    max-width: 420px;
+}
+
+.profile-title {
+    margin-bottom: 20px;
+}
+
+.profile-box label {
+    font-weight: 600;
+    display: block;
+    margin-bottom: 6px;
+}
+
+.profile-box input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    margin-bottom: 14px;
+}
+
+/* Logout button */
+.btn-logout {
+    width: 100%;
+    padding: 12px;
+    background: #e53935;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 15px;
+}
+
+.btn-logout:hover {
+    background: #c62828;
+}
+
 
 .btn-add:hover {
     background: #218838;
@@ -430,18 +479,6 @@ input {
         box-shadow: 0 2px 8px rgba(0,0,0,0.08);
         margin-bottom: 40px;
     }
-
-    /* Tabuľka – scroll + odsadenie */
-    .admin-table {
-        display: block;
-        white-space: nowrap;
-        overflow-x: auto;
-        padding-left: 5px;
-        padding-right: 5px;
-        margin-left: -5px;
-        margin-right: -5px;
-    }
-
 
     .admin-table th,
     .admin-table td {
@@ -612,7 +649,15 @@ input {
     text-decoration: underline;
 }
 
+.admin-box {
+    overflow-x: hidden;
+}
 
+@media (max-width: 500px) {
+    .admin-box {
+        padding: 18px;
+    }
+}
 
 
 

@@ -1,3 +1,15 @@
+async function checkAuth() {
+    const res = await fetch("/api/auth/me", {
+        credentials: "include"
+    });
+
+    if (!res.ok) {
+        window.location.href = "login.html";
+    }
+}
+
+checkAuth();
+
 const user = JSON.parse(localStorage.getItem("user"));
 
 document.getElementById("emailInput").value = user.email;
@@ -14,7 +26,8 @@ document.getElementById("saveEmailBtn").addEventListener("click", async () => {
     const res = await fetch("/api/profile/email", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ id: user.id_pouzivatel, email })
+        credentials: "include",
+        body: JSON.stringify({ email })
     });
 
     const data = await res.json();
@@ -47,8 +60,8 @@ document.getElementById("savePasswordBtn").addEventListener("click", async () =>
     const res = await fetch("/api/profile/password", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
+        credentials: "include",
         body: JSON.stringify({
-            id: user.id_pouzivatel,
             oldPassword: oldP,
             newPassword: newP
         })
@@ -63,3 +76,23 @@ document.getElementById("savePasswordBtn").addEventListener("click", async () =>
     alert("Heslo zmenené.");
     oldPassword.value = newPassword.value = confirmPassword.value = "";
 });
+
+
+const logoutBtn = document.getElementById("logoutBtn");
+
+if (logoutBtn) {
+    logoutBtn.addEventListener("click", async () => {
+        try {
+            await fetch("/api/auth/logout", {
+                method: "POST",
+                credentials: "include"
+            });
+
+            localStorage.removeItem("user");
+            window.location.href = "login.html";
+        } catch (e) {
+            const msg = document.getElementById("logoutMsg");
+            if (msg) msg.textContent = "Chyba pri odhlasovaní.";
+        }
+    });
+}

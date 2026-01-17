@@ -18,6 +18,13 @@ export const PouzivatelController = {
         if (!meno || !email || !heslo || !rola) {
             return res.status(400).json({ error: "Všetky polia sú povinné." });
         }
+        if (!email.includes("@") || !email.includes(".")) {
+            return res.status(400).json({ error: "Neplatný email." });
+        }
+
+        if (heslo.length < 4) {
+            return res.status(400).json({ error: "Heslo musí mať aspoň 4 znaky." });
+        }
 
         try {
             // HASH hesla
@@ -77,29 +84,59 @@ export const PouzivatelController = {
     async login(req, res) {
         const { email, heslo } = req.body;
 
+        // 1️⃣ povinné polia
         if (!email || !heslo) {
-            return res.status(400).json({ error: "Zadajte email aj heslo." });
+            return res.status(400).json({
+                error: "Neplatné prihlasovacie údaje."
+            });
+        }
+
+        // 2️⃣ validácia emailu (SERVER)
+        if (!email.includes("@") || !email.includes(".")) {
+            return res.status(400).json({
+                error: "Neplatné prihlasovacie údaje."
+            });
+        }
+
+        // 3️⃣ minimálna dĺžka hesla (SERVER)
+        if (heslo.length < 4) {
+            return res.status(400).json({
+                error: "Neplatné prihlasovacie údaje."
+            });
         }
 
         PouzivatelModel.getByEmail(email, async (err, user) => {
-            if (err) return res.status(500).json({ error: "Chyba servera." });
+            if (err) {
+                return res.status(500).json({ error: "Chyba servera." });
+            }
 
-            // používateľ nenájdený
+            // 4️⃣ email neexistuje
             if (!user) {
-                return res.status(401).json({ error: "Nesprávny email alebo heslo." });
+                return res.status(401).json({
+                    error: "Neplatné prihlasovacie údaje."
+                });
             }
 
-            // porovnanie hash hesla
+            // 5️⃣ porovnanie hashov
             const match = await bcrypt.compare(heslo, user.heslo);
-
             if (!match) {
-                return res.status(401).json({ error: "Nesprávny email alebo heslo." });
+                return res.status(401).json({
+                    error: "Neplatné prihlasovacie údaje."
+                });
             }
 
-            // heslo neposielame späť
+            // 6️⃣ nikdy neposielať heslo
             delete user.heslo;
+            // 7️⃣ uloženie používateľa do session
+            req.session.user = {
+                id: user.id_pouzivatel,
+                email: user.email,
+                rola: user.rola
+            };
 
             res.json(user);
         });
     }
+
+
 };
