@@ -51,9 +51,33 @@
         <button class="btn-add" id="savePasswordBtn">Zmeniť heslo</button>
         <div class="error-box" id="passwordError"></div>
     </div>
+
+    <!-- FAKTÚRY -->
+    <div class="admin-box">
+        <h2>Faktúry</h2>
+
+        <!-- Upload -->
+        <input type="file" id="invoiceFile" accept=".pdf,.jpg,.jpeg,.png">
+        <button class="btn-add" id="uploadInvoiceBtn">Nahrať faktúru</button>
+        <div class="error-box" id="invoiceError"></div>
+
+        <!-- Zoznam -->
+        <table class="admin-table">
+            <thead>
+            <tr>
+                <th>Názov</th>
+                <th>Dátum</th>
+                <th>Akcie</th>
+            </tr>
+            </thead>
+            <tbody id="invoiceTable"></tbody>
+        </table>
+    </div>
 </main>
 
 <script src="appPublic.js"></script>
 <script src="profile.js"></script>
+<script src="profile-invoices.js"></script>
+
 </body>
 </html>

@@ -9,7 +9,7 @@ import ZaznamRoutes from "./routes/ZaznamRoutes.js";
 import ProfileRoutes from "./routes/ProfileRoutes.js";
 import session from "express-session";
 import AuthRoutes from "./routes/AuthRoutes.js";
-
+import FakturaRoutes from "./routes/FakturaRoutes.js";
 
 
 const app = express();
@@ -48,6 +48,7 @@ app.use("/api", SensorRoutes);
 app.use("/api", ZaznamRoutes);
 app.use("/api", AuthRoutes);
 app.use("/api", ProfileRoutes);
+app.use("/api", FakturaRoutes);
 app.use(express.static("public"));
 
 
