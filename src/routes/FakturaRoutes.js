@@ -1,3 +1,8 @@
+/****************************************
+ *  pri vytváraní tohoto súboru som si pomáhal s AI
+ ****************************************/
+
+
 import express from "express";
 import { FakturaController } from "../controllers/FakturaController.js";
 import { uploadFaktura } from "../middleware/uploadFaktura.js";

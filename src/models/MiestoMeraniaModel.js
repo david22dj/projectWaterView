@@ -1,3 +1,8 @@
+/****************************************
+ *  pri vytváraní tohoto súboru som si pomáhal s AI
+ ****************************************/
+
+
 import db from "../db.js";
 
 export const MiestoMeraniaModel = {

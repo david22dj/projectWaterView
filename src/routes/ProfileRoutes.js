@@ -1,3 +1,8 @@
+/****************************************
+ *  pri vytváraní tohoto súboru som si pomáhal s AI
+ ****************************************/
+
+
 import express from "express";
 import { ProfileController } from "../controllers/ProfileController.js";
 import { requireAuth } from "../middleware/auth.js";

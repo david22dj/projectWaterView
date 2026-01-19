@@ -1,3 +1,8 @@
+/****************************************
+ *  pri vytváraní tohoto súboru som si pomáhal s AI
+ ****************************************/
+
+
 import express from "express";
 import { MiestnostController } from "../controllers/MiestnostController.js";
 import { requireAuth, requireAdmin } from "../middleware/auth.js";

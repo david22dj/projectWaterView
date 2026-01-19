@@ -1,3 +1,8 @@
+/****************************************
+ *  pri vytváraní tohoto súboru som si pomáhal s AI
+ ****************************************/
+
+
 import bcrypt from "bcrypt";
 import { PouzivatelModel } from "../models/PouzivatelModel.js";
 

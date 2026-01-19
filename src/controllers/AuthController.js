@@ -1,3 +1,8 @@
+/****************************************
+ *  pri vytváraní tohoto súboru som si pomáhal s AI
+ ****************************************/
+
+
 export const AuthController = {
     me(req, res) {
         if (!req.session.user) {

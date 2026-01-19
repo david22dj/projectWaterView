@@ -1,3 +1,8 @@
+/****************************************
+ *  pri vytváraní tohoto súboru som si pomáhal s AI
+ ****************************************/
+
+
 import express from "express";
 import { ZaznamController } from "../controllers/ZaznamController.js";
 import { requireAuth, requireAdmin } from "../middleware/auth.js";

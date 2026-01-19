@@ -1,3 +1,8 @@
+/****************************************
+ *  pri vytváraní tohoto súboru som si pomáhal s AI
+ ****************************************/
+
+
 const dateInput = document.getElementById("historyDate");
 const tbody = document.getElementById("historyTableBody");
 

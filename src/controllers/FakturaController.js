@@ -1,3 +1,8 @@
+/****************************************
+ *  pri vytváraní tohoto súboru som si pomáhal s AI
+ ****************************************/
+
+
 import fs from "fs";
 import path from "path";
 import { FakturaModel } from "../models/FakturaModel.js";

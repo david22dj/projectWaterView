@@ -1,3 +1,8 @@
+/****************************************
+ *  pri vytváraní tohoto súboru som si pomáhal s AI
+ ****************************************/
+
+
 import { ZaznamModel } from "../models/ZaznamModel.js";
 import { SensorModel } from "../models/SensorModel.js";
 

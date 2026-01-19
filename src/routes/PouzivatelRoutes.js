@@ -1,3 +1,8 @@
+/****************************************
+ *  pri vytváraní tohoto súboru som si pomáhal s AI
+ ****************************************/
+
+
 import express from "express";
 import { PouzivatelController } from "../controllers/PouzivatelController.js";
 import { requireAdmin } from "../middleware/auth.js";

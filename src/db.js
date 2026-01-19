@@ -1,3 +1,8 @@
+/****************************************
+ *  pri vytváraní tohoto súboru som si pomáhal s AI
+ ****************************************/
+
+
 import sqlite3 from "sqlite3";
 import { readFileSync } from "fs";
 import { join } from "path";

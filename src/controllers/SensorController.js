@@ -1,3 +1,8 @@
+/****************************************
+ *  pri vytváraní tohoto súboru som si pomáhal s AI
+ ****************************************/
+
+
 import { SensorModel } from "../models/SensorModel.js";
 import { MiestoMeraniaModel } from "../models/MiestoMeraniaModel.js";
 

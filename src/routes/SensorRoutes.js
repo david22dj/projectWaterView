@@ -1,3 +1,8 @@
+/****************************************
+ *  pri vytváraní tohoto súboru som si pomáhal s AI
+ ****************************************/
+
+
 import express from "express";
 import { SensorController } from "../controllers/SensorController.js";
 import { requireAuth, requireAdmin } from "../middleware/auth.js";

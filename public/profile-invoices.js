@@ -1,3 +1,8 @@
+/****************************************
+ *  pri vytváraní tohoto súboru som si pomáhal s AI
+ ****************************************/
+
+
 document.addEventListener("DOMContentLoaded", () => {
     loadInvoices();
 });

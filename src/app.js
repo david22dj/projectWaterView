@@ -1,3 +1,8 @@
+/****************************************
+ *  pri vytváraní tohoto súboru som si pomáhal s AI
+ ****************************************/
+
+
 import express from "express";
 import db from "./db.js";
 import PouzivatelRoutes from "./routes/PouzivatelRoutes.js";
