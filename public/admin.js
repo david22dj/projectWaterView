@@ -1053,7 +1053,8 @@ async function createRecord() {
     }
 
     document.querySelector(".modal-overlay").remove();
-    loadRecords();
+    const selectedDate = document.getElementById("recordDate")?.value;
+    loadRecords(selectedDate);
 }
 
 
@@ -1067,5 +1068,6 @@ async function deleteRecord(id) {
         method: "DELETE"
     });
 
-    loadRecords();
+    const selectedDate = document.getElementById("recordDate")?.value;
+    loadRecords(selectedDate);
 }
