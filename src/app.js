@@ -16,13 +16,14 @@ import session from "express-session";
 import AuthRoutes from "./routes/AuthRoutes.js";
 import FakturaRoutes from "./routes/FakturaRoutes.js";
 
+import vstupPicoRoutes from "./routes/VstupPicoRoutes.js";
 
 const app = express();
 
 app.use(express.json());
 
 app.use(session({
-    secret: "waterview-secret-key",
+    secret: "waterview-secret-key", //DavidHeslo
     resave: false,
     saveUninitialized: false,
     cookie: {
@@ -42,7 +43,7 @@ app.set("getLastMessage", () => lastMessage);
 
 
 app.get("/", (req, res) => {
-    res.send("Backend beží...");
+    res.send("Backend bezi...");
 });
 
 
@@ -54,6 +55,7 @@ app.use("/api", ZaznamRoutes);
 app.use("/api", AuthRoutes);
 app.use("/api", ProfileRoutes);
 app.use("/api", FakturaRoutes);
+app.use("/api", vstupPicoRoutes);
 app.use(express.static("public"));
 
 

@@ -95,5 +95,10 @@ export const SensorModel = {
         ORDER BY s.id_sensor DESC
     `;
         db.all(sql, [id_meranie], callback);
+    },
+
+    getById(id_sensor, callback) {
+        const sql = `SELECT id_sensor FROM Sensor WHERE id_sensor = ?`;
+        db.get(sql, [id_sensor], callback);
     }
 };

@@ -104,5 +104,24 @@ async function requireLogin() {
         window.location.href = "login.html";
     }
 }
+(function enableSwipeForAllTables() {
+    function wrapTable(table) {
+        if (!table || table.closest(".table-swipe-x")) return;
 
+        const wrapper = document.createElement("div");
+        wrapper.className = "table-swipe-x";
+
+        table.parentNode.insertBefore(wrapper, table);
+        wrapper.appendChild(table);
+    }
+
+    function init() {
+        document.querySelectorAll("table").forEach(wrapTable);
+    }
+
+    init();
+
+    const obs = new MutationObserver(() => init());
+    obs.observe(document.body, { childList: true, subtree: true });
+})();
 requireLogin();

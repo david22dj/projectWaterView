@@ -172,6 +172,7 @@ async function loadAdminSection(type) {
                 <thead>
                     <tr>
                         <th>Miestnosť</th>
+                        <th>ID senzora</th>
                         <th>Miesto merania</th>
                         <th>Typ</th>
                         <th>Jednotka</th>
@@ -343,6 +344,7 @@ async function loadSensors(roomId = "", measureId = "") {
     tbody.innerHTML = data.map(s => `
         <tr>
             <td>${s.miestnost_nazov}</td>
+            <td>${s.id_sensor}</td>
             <td>${s.meranie_nazov}</td>
             <td>${s.typ}</td>
             <td>${s.jednotka}</td>

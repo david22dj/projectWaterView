@@ -660,6 +660,41 @@ input {
         padding: 18px;
     }
 }
+/* ===== Mobile typography / layout ===== */
+html { font-size: 16px; }
+body { font-size: 1rem; }
+
+
+
+/* ===== Universal horizontal swipe wrapper ===== */
+.table-swipe-x {
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-x pan-y;
+    overscroll-behavior-x: contain;
+}
+
+/* nech tabuľky majú čo scrollovať (inak sa nezjaví) */
+.table-swipe-x > table {
+    min-width: 900px;
+    border-collapse: collapse;
+}
+
+/* admin-table čitateľnejšie na mobile */
+@media (max-width: 768px) {
+    .admin-table th, .admin-table td { padding: 12px 10px; font-size: 1rem; }
+}
+
+/* voliteľné: môžeš dať na hocijaký div, graf, kontajner */
+.swipe-x {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-x pan-y;
+}
+
+
 
 
 
